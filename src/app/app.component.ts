@@ -46,6 +46,7 @@ export class AppComponent implements OnInit {
 
   onUpdatePost(editData: { id: string, title: string; content: string }){
     this.postService.updatePostService(editData);
+    this.fetchPosts();
   }
 
   onFetchPosts() {
@@ -80,14 +81,9 @@ export class AppComponent implements OnInit {
   }
 
   onEditForm(data: Post) {
-    console.log(data);
-
     this.tempEditData.id = data.id;
     this.tempEditData.title = data.title;
-    this.tempEditData.content = data.content
-
-    console.log(this.tempEditData);
-
+    this.tempEditData.content = data.content;
   }
 
   private fetchPosts() {

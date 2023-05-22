@@ -2,7 +2,8 @@
   <!-- POST DATA -->
   <div class="row">
     <div class="col-xs-12 col-md-6 col-md-offset-3">
-      <h3>Post Data</h3>
+      <h5>Post Your Content Here!</h5>
+      <hr>
       <form #postForm="ngForm" (ngSubmit)="onCreatePost(postForm.value)">
         <div class="form-group">
           <label for="title">Title</label>
@@ -15,6 +16,7 @@
             name="title"
           />
         </div>
+        <br>
         <div class="form-group">
           <label for="content">Content</label>
           <textarea
@@ -25,6 +27,7 @@
             name="content"
           ></textarea>
         </div>
+        <br>
         <button
           class="btn btn-primary"
           type="submit"
@@ -34,23 +37,17 @@
         </button>
       </form>
     </div>
-  </div>
-  <br><br>
-  <hr>
-  <br>
-  <!-- EDIT DATA -->
-  <div class="row">
     <div class="col-xs-12 col-md-6 col-md-offset-3">
-      <h3>Edit Data</h3>
+      <h5>Edit Your Content Here!</h5>
+      <hr>
       <form #editForm="ngForm" (ngSubmit)="onUpdatePost(editForm.value)">
         <div class="form-group">
-          <label for="id">ID</label>
           <input
-            type="text"
+            type="hidden"
             class="form-control"
             id="id"
             required
-            ngModel
+            [(ngModel)]="tempEditData.id"
             name="id"
           />
         </div>
@@ -61,49 +58,55 @@
             class="form-control"
             id="title"
             required
-            ngModel
+            [(ngModel)]="tempEditData.title"
             name="title"
           />
         </div>
+        <br>
         <div class="form-group">
           <label for="content">Content</label>
           <textarea
             class="form-control"
             id="content"
             required
-            ngModel
+            [(ngModel)]="tempEditData.content"
             name="content"
           ></textarea>
         </div>
+        <br>
         <button
-          class="btn btn-primary"
+          class="btn btn-warning"
           type="submit"
           [disabled]="!editForm.valid"
         >
-          Edit
+          Edit Post
         </button>
       </form>
     </div>
   </div>
   <br>
   <hr>
-  <br>
   <!-- FETCH BUTTON -->
   <div class="row">
-    <div class="col-xs-12 col-md-6 col-md-offset-3">
-      <button class="btn btn-primary" (click)="onFetchPosts()">
-        Fetch Posts
+    <div class="col-xs-12 col-md-9">
+      <h5>All Your Posts Here!</h5>
+    </div>
+    <div class="col-xs-12 col-md-1">
+      <button class="btn btn-success" (click)="onFetchPosts()">
+        Refresh
       </button>
-      |
+    </div>
+    <div class="col-xs-12 col-md-2">
       <button
         class="btn btn-danger"
         [disabled]="loadedPosts.length < 1"
         (click)="onClearPosts()"
       >
-        Clear Posts
+        Clear All
       </button>
     </div>
   </div>
+  <hr>
   <!-- SHOW DATA -->
   <div class="row">
     <div class="alert alert-danger" role="alert" *ngIf="error">
@@ -113,14 +116,29 @@
     <div class="spinner-border" style="width:3rem; height: 3rem;" role="status" *ngIf="showLoading  && !error">
     </div>
     <span class="sr-only" *ngIf="showLoading && !error"> Loading ...</span>
-    <div class="col-xs-12 col-md-6 col-md-offset-3">
-      <p *ngIf="loadedPosts.length < 1">No post available!</p>
-      <ul class="list-group" *ngIf="loadedPosts.length >= 1">
-        <li class="list-group-item" *ngFor="let post of loadedPosts" (click)="onEditForm(post)">
-          <h3>{{post.title}}</h3>
-          <p>{{post.content}}</p>
-        </li>
-      </ul>
+    <div class="col-xs-12 col-md-6 col-md-offset-3" *ngIf="loadedPosts.length < 1">
+      <p>No post available!</p>
+    </div>
+    <div *ngIf="loadedPosts.length >= 1" >
+      <div class="col-xs-12 col-md-6 col-md-offset-3" *ngFor="let post of loadedPosts">
+        <div class="card" (click)="onEditForm(post)">
+          <div class="card-body">
+            <div class="card-title">
+              <strong>{{post.title}}</strong>
+            </div>
+            <div class="card-text">
+              {{post.content}}
+            </div>
+          </div>
+        </div>
+        <!-- <ul class="list-group" >
+          <li class="list-group-item"  (click)="onEditForm(post)">
+            <h3></h3>
+            <p>{{post.content}}</p>
+          </li>
+        </ul> -->
+      </div>
     </div>
   </div>
 </div>
+
